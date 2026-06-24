@@ -66,3 +66,19 @@ public class CourseService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
     }
 }
+
+@Transactional
+    public void addProfessor(UUID courseId, UUID profId) {
+        Course course = getCourseEntity(courseId);
+        User professor = userRepository.findById(profId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professor não encontrado"));
+
+        if (professor.getRole() != UserRole.Professor) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O usuário selecionado não é um professor");
+        }
+
+        if (!course.getProfessors().contains(professor)) {
+            course.getProfessors().add(professor);
+            courseRepository.save(course);
+        }
+    }
