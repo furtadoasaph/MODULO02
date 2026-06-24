@@ -56,3 +56,9 @@ public class DisciplineController {
         return ResponseEntity.noContent().build();
     }
 }
+
+@GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<DisciplineResponse> getDiscipline(@PathVariable UUID id) {
+        return ResponseEntity.ok(disciplineService.findById(id));
+    }
