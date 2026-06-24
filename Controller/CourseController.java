@@ -62,3 +62,10 @@ public class CourseController {
         return ResponseEntity.noContent().build();
     }
 }
+
+@PostMapping("/{id}/professors/{profId}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<Void> addProfessor(@PathVariable UUID id, @PathVariable UUID profId) {
+        courseService.addProfessor(id, profId);
+        return ResponseEntity.noContent().build();
+    }
